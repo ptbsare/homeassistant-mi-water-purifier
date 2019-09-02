@@ -92,7 +92,7 @@ class XiaomiWaterPurifierSensor(Entity):
            self._data_key['key'] is FRONT_ACTIVE_CARBON_FILTER_REMAINING['key'] or \
            self._data_key['key'] is RO_FILTER_REMAINING['key'] or \
            self._data_key['key'] is REAR_ACTIVE_CARBON_FILTER_REMAINING['key']:
-            attrs[self._data_key['name']] = '{} days remaining'.format(self._data[self._data_key['days_key']])
+            attrs['days_resource'] = self._data[self._data_key['days_key']]
 
         return attrs
 
@@ -157,8 +157,10 @@ class XiaomiWaterPurifier(Entity):
         try:
             data = {}
             status = self._device.send('get_prop', [])
-            data[TAP_WATER_QUALITY['key']] = status[0]
-            data[FILTERED_WATER_QUALITY['key']] = status[1]
+            twq = int(status[0])
+            data[TAP_WATER_QUALITY['key']] = twq
+            fwq = int(status[1])
+            data[FILTERED_WATER_QUALITY['key']] = fwq
             pfd = int((status[11] - status[3]) / 24)
             data[PP_COTTON_FILTER_REMAINING['days_key']] = pfd
             data[PP_COTTON_FILTER_REMAINING['key']] = math.floor(pfd * 24 * 100 / status[11])
