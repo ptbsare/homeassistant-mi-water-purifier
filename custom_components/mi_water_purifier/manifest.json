@@ -1,0 +1,10 @@
+{
+  "domain": "mi_water_purifier",
+  "name": "mi_water_purifier",
+  "documentation": "https://github.com/ptbsare/homeassistant-mi-water-purifier",
+  "requirements": [
+    "python-miio>=0.4.8"
+  ],
+  "dependencies": [],
+  "codeowners": ["@bit3725"]
+}
