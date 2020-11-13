@@ -1,4 +1,6 @@
-"""Support for Xiaomi water purifier."""
+"""Support for Xiaomi water purifier C1."""
+
+#'["run_status","f1_totaltime","f1_usedtime","f2_totaltime","f2_usedtime","tds_in","tds_out","rinse","temperature","tds_warn_thd","f3_totaltime","f3_usedtime"]'
 import math
 import logging
 
@@ -11,12 +13,14 @@ _LOGGER = logging.getLogger(__name__)
 
 REQUIREMENTS = ['python-miio>=0.3.1']
 
-TAP_WATER_QUALITY = {'name': 'Tap water', 'key': 'ttds'}
-FILTERED_WATER_QUALITY = {'name': 'Filtered water', 'key': 'ftds'}
+TAP_WATER_QUALITY = {'name': 'Tap water', 'key': 'tds_in'}
+FILTERED_WATER_QUALITY = {'name': 'Filtered water', 'key': 'tds_out'}
 PP_COTTON_FILTER_REMAINING = {'name': 'PP cotton filter', 'key': 'pfd', 'days_key': 'pfp'}
-FRONT_ACTIVE_CARBON_FILTER_REMAINING = {'name': 'Front active carbon filter', 'key': 'fcfd', 'days_key': 'fcfp'}
 RO_FILTER_REMAINING = {'name': 'RO filter', 'key': 'rfd', 'days_key': 'rfp'}
 REAR_ACTIVE_CARBON_FILTER_REMAINING = {'name': 'Rear active carbon filter', 'key': 'rcfd', 'days_key': 'rcfp'}
+TEMPERATURE = {'name': 'Water Temperature', 'key': 'temperature'}
+RINSE = {'name': 'Rinse', 'key': 'rinse'}
+TDS_WARN = {'name': 'TDS Warn', 'key': 'tds_warn_thd'}
 
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
@@ -36,9 +40,11 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
         devices.append(XiaomiWaterPurifierSensor(waterPurifier, TAP_WATER_QUALITY))
         devices.append(XiaomiWaterPurifierSensor(waterPurifier, FILTERED_WATER_QUALITY))
         devices.append(XiaomiWaterPurifierSensor(waterPurifier, PP_COTTON_FILTER_REMAINING))
-        devices.append(XiaomiWaterPurifierSensor(waterPurifier, FRONT_ACTIVE_CARBON_FILTER_REMAINING))
         devices.append(XiaomiWaterPurifierSensor(waterPurifier, RO_FILTER_REMAINING))
         devices.append(XiaomiWaterPurifierSensor(waterPurifier, REAR_ACTIVE_CARBON_FILTER_REMAINING))
+        devices.append(XiaomiWaterPurifierSensor(waterPurifier, TEMPERATURE))
+#        devices.append(XiaomiWaterPurifierSensor(waterPurifier, RINSE))
+#        devices.append(XiaomiWaterPurifierSensor(waterPurifier, TDS_WARN))
     except DeviceException:
         _LOGGER.exception('Fail to setup Xiaomi water purifier')
         raise PlatformNotReady
@@ -80,7 +86,9 @@ class XiaomiWaterPurifierSensor(Entity):
         """Return the unit of measurement of this entity, if any."""
         if self._data_key['key'] is TAP_WATER_QUALITY['key'] or \
            self._data_key['key'] is FILTERED_WATER_QUALITY['key']:
-            return 'TDS'
+            return 'ppm'
+        if self._data_key['key'] is TEMPERATURE['key'] or \
+            return '°C'
         return '%'
 
     @property
@@ -89,7 +97,6 @@ class XiaomiWaterPurifierSensor(Entity):
         attrs = {}
 
         if self._data_key['key'] is PP_COTTON_FILTER_REMAINING['key'] or \
-           self._data_key['key'] is FRONT_ACTIVE_CARBON_FILTER_REMAINING['key'] or \
            self._data_key['key'] is RO_FILTER_REMAINING['key'] or \
            self._data_key['key'] is REAR_ACTIVE_CARBON_FILTER_REMAINING['key']:
             attrs['days_resource'] = self._data[self._data_key['days_key']]
@@ -146,9 +153,9 @@ class XiaomiWaterPurifier(Entity):
         attrs = {}
         attrs[TAP_WATER_QUALITY['name']] = '{}TDS'.format(self._data[TAP_WATER_QUALITY['key']])
         attrs[PP_COTTON_FILTER_REMAINING['name']] = '{}%'.format(self._data[PP_COTTON_FILTER_REMAINING['key']])
-        attrs[FRONT_ACTIVE_CARBON_FILTER_REMAINING['name']] = '{}%'.format(self._data[FRONT_ACTIVE_CARBON_FILTER_REMAINING['key']])
         attrs[RO_FILTER_REMAINING['name']] = '{}%'.format(self._data[RO_FILTER_REMAINING['key']])
         attrs[REAR_ACTIVE_CARBON_FILTER_REMAINING['name']] = '{}%'.format(self._data[REAR_ACTIVE_CARBON_FILTER_REMAINING['key']])
+        attrs[TEMPERATURE['name']] = '{} °C'.format(self._data[TEMPERATURE['key']])
 
         return attrs
 
@@ -156,23 +163,25 @@ class XiaomiWaterPurifier(Entity):
         """Parse data."""
         try:
             data = {}
-            status = self._device.send('get_prop', [])
-            twq = int(status[0])
-            data[TAP_WATER_QUALITY['key']] = twq
-            fwq = int(status[1])
-            data[FILTERED_WATER_QUALITY['key']] = fwq
-            pfd = int((status[11] - status[3]) / 24)
+            data[TAP_WATER_QUALITY['key']] = self._device.send('get_prop', ["tds_in"])
+            data[FILTERED_WATER_QUALITY['key']] = self._device.send('get_prop', ["tds_out"])
+            data[TEMPERATURE['key']] = self._device.send('get_prop', ["temperature"])
+            f1_totaltime = self._device.send('get_prop', ["f1_totaltime"]) 
+            f1_usedtime = self._device.send('get_prop', ["f1_usedtime"])
+            f2_totaltime = self._device.send('get_prop', ["f2_totaltime"]) 
+            f2_usedtime = self._device.send('get_prop', ["f2_usedtime"])
+            f3_totaltime = self._device.send('get_prop', ["f3_totaltime"]) 
+            f3_usedtime = self._device.send('get_prop', ["f3_usedtime"])
+
+            pfd = int((f1_totaltime - f1_usedtime) / 24)
             data[PP_COTTON_FILTER_REMAINING['days_key']] = pfd
-            data[PP_COTTON_FILTER_REMAINING['key']] = math.floor(pfd * 24 * 100 / status[11])
-            fcfd = int((status[13] - status[5]) / 24)
-            data[FRONT_ACTIVE_CARBON_FILTER_REMAINING['days_key']] = fcfd
-            data[FRONT_ACTIVE_CARBON_FILTER_REMAINING['key']] = math.floor(fcfd * 24 * 100 / status[13])
-            rfd = int((status[15] - status[7]) / 24)
+            data[PP_COTTON_FILTER_REMAINING['key']] = math.floor(pfd * 24 * 100 / f1_totaltime)
+            rfd = int((f2_totaltime - f2_usedtime) / 24)
             data[RO_FILTER_REMAINING['days_key']] = rfd
-            data[RO_FILTER_REMAINING['key']] = math.floor(rfd * 24 * 100 / status[15])
-            rcfd = int((status[17] - status[9]) / 24)
+            data[RO_FILTER_REMAINING['key']] = math.floor(rfd * 24 * 100 / f2_totaltime)
+            rcfd = int((f3_totaltime - f3_usedtime) / 24)
             data[REAR_ACTIVE_CARBON_FILTER_REMAINING['days_key']] = rcfd
-            data[REAR_ACTIVE_CARBON_FILTER_REMAINING['key']] = math.floor(rcfd * 24 * 100 / status[17])
+            data[REAR_ACTIVE_CARBON_FILTER_REMAINING['key']] = math.floor(rcfd * 24 * 100 / f3_totaltime)
 
             self._data = data
             self._state = self._data[FILTERED_WATER_QUALITY['key']]
