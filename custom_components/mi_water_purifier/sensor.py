@@ -87,7 +87,7 @@ class XiaomiWaterPurifierSensor(Entity):
         if self._data_key['key'] is TAP_WATER_QUALITY['key'] or \
            self._data_key['key'] is FILTERED_WATER_QUALITY['key']:
             return 'ppm'
-        if self._data_key['key'] is TEMPERATURE['key'] or \
+        if self._data_key['key'] is TEMPERATURE['key']:
             return '°C'
         return '%'
 
