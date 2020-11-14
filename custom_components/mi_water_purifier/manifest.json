@@ -3,7 +3,7 @@
   "name": "mi_water_purifier",
   "documentation": "https://github.com/ptbsare/homeassistant-mi-water-purifier",
   "requirements": [
-    "python-miio>=0.4.8"
+    "python-miio>=0.5.3"
   ],
   "dependencies": [],
   "codeowners": ["@bit3725"]
