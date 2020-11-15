@@ -14,7 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 REQUIREMENTS = ['python-miio>=0.3.1']
 
 TAP_WATER_QUALITY = {'name': '自来水', 'key': 'tds_in'}
-FILTERED_WATER_QUALITY = {'name': '过滤水直饮水', 'key': 'tds_out'}
+FILTERED_WATER_QUALITY = {'name': '过滤直饮水', 'key': 'tds_out'}
 PP_COTTON_FILTER_REMAINING = {'name': '前置PP棉滤芯', 'key': 'pfd', 'days_key': 'pfp'}
 RO_FILTER_REMAINING = {'name': '纯水RO滤芯', 'key': 'rfd', 'days_key': 'rfp'}
 REAR_ACTIVE_CARBON_FILTER_REMAINING = {'name': '后置复合碳滤芯', 'key': 'rcfd', 'days_key': 'rcfp'}
