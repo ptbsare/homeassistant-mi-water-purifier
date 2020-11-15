@@ -13,12 +13,12 @@ _LOGGER = logging.getLogger(__name__)
 
 REQUIREMENTS = ['python-miio>=0.3.1']
 
-TAP_WATER_QUALITY = {'name': 'Tap water', 'key': 'tds_in'}
-FILTERED_WATER_QUALITY = {'name': 'Filtered water', 'key': 'tds_out'}
-PP_COTTON_FILTER_REMAINING = {'name': 'PP cotton filter', 'key': 'pfd', 'days_key': 'pfp'}
-RO_FILTER_REMAINING = {'name': 'RO filter', 'key': 'rfd', 'days_key': 'rfp'}
-REAR_ACTIVE_CARBON_FILTER_REMAINING = {'name': 'Rear active carbon filter', 'key': 'rcfd', 'days_key': 'rcfp'}
-TEMPERATURE = {'name': 'Water Temperature', 'key': 'temperature'}
+TAP_WATER_QUALITY = {'name': '自来水TDS', 'key': 'tds_in'}
+FILTERED_WATER_QUALITY = {'name': '过滤水直饮水TDS', 'key': 'tds_out'}
+PP_COTTON_FILTER_REMAINING = {'name': '前置PP棉滤芯', 'key': 'pfd', 'days_key': 'pfp'}
+RO_FILTER_REMAINING = {'name': '纯水RO滤芯', 'key': 'rfd', 'days_key': 'rfp'}
+REAR_ACTIVE_CARBON_FILTER_REMAINING = {'name': '后置复合碳滤芯', 'key': 'rcfd', 'days_key': 'rcfp'}
+TEMPERATURE = {'name': '进水温度', 'key': 'temperature'}
 RINSE = {'name': 'Rinse', 'key': 'rinse'}
 TDS_WARN = {'name': 'TDS Warn', 'key': 'tds_warn_thd'}
 
