@@ -163,15 +163,15 @@ class XiaomiWaterPurifier(Entity):
         """Parse data."""
         try:
             data = {}
-            data[TAP_WATER_QUALITY['key']] = self._device.send('get_prop', '["tds_in"]')[0]
-            data[FILTERED_WATER_QUALITY['key']] = self._device.send('get_prop', '["tds_out"]')[0]
-            data[TEMPERATURE['key']] = self._device.send('get_prop', '["temperature"]')[0]
-            f1_totaltime = self._device.send('get_prop', '["f1_totaltime"]')[0] 
-            f1_usedtime = self._device.send('get_prop', '["f1_usedtime"]')[0]
-            f2_totaltime = self._device.send('get_prop', '["f2_totaltime"]')[0] 
-            f2_usedtime = self._device.send('get_prop', '["f2_usedtime"]')[0]
-            f3_totaltime = self._device.send('get_prop', '["f3_totaltime"]')[0] 
-            f3_usedtime = self._device.send('get_prop', '["f3_usedtime"]')[0]
+            data[TAP_WATER_QUALITY['key']] = self._device.send('get_prop', ["tds_in"])[0]
+            data[FILTERED_WATER_QUALITY['key']] = self._device.send('get_prop', ["tds_out"])[0]
+            data[TEMPERATURE['key']] = self._device.send('get_prop', ["temperature"])[0]
+            f1_totaltime = self._device.send('get_prop', ["f1_totaltime"])[0] 
+            f1_usedtime = self._device.send('get_prop', ["f1_usedtime"])[0]
+            f2_totaltime = self._device.send('get_prop', ["f2_totaltime"])[0] 
+            f2_usedtime = self._device.send('get_prop', ["f2_usedtime"])[0]
+            f3_totaltime = self._device.send('get_prop', ["f3_totaltime"])[0] 
+            f3_usedtime = self._device.send('get_prop', ["f3_usedtime"])[0]
 
             pfd = int((f1_totaltime - f1_usedtime) / 24)
             data[PP_COTTON_FILTER_REMAINING['days_key']] = pfd
