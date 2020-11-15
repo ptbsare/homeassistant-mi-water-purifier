@@ -100,12 +100,12 @@ class XiaomiWaterPurifierSensor(Entity):
            self._data_key['key'] is RO_FILTER_REMAINING['key'] or \
            self._data_key['key'] is REAR_ACTIVE_CARBON_FILTER_REMAINING['key']:
             attrs['days_resource'] = self._data[self._data_key['days_key']]
-        if self._data_key['key'] is TEMPERATURE['key']:
-            attrs['water_temperature'] = self._data[self._data_key['key']]
-        if self._data_key['key'] is TAP_WATER_QUALITY['key']:
-            attrs['tap_water_quality'] = self._data[self._data_key['key']]
-        if self._data_key['key'] is FILTERED_WATER_QUALITY['key']:
-            attrs['filtered_water_quality'] = self._data[self._data_key['key']]
+#        if self._data_key['key'] is TEMPERATURE['key']:
+#            attrs['water_temperature'] = self._data[self._data_key['key']]
+#        if self._data_key['key'] is TAP_WATER_QUALITY['key']:
+#            attrs['tap_water_quality'] = self._data[self._data_key['key']]
+#        if self._data_key['key'] is FILTERED_WATER_QUALITY['key']:
+#            attrs['filtered_water_quality'] = self._data[self._data_key['key']]
 
         return attrs
 
@@ -141,7 +141,7 @@ class XiaomiWaterPurifier(Entity):
     @property
     def unit_of_measurement(self):
         """Return the unit of measurement of this entity, if any."""
-        return 'TDS'
+        return 'ppm'
 
     @property
     def state(self):
