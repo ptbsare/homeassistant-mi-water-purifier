@@ -6,9 +6,9 @@ XiaoMi Water Purifier component for Home Assistant.
 * 名称：小米净水器C1 三出水
 
 
-![Screenshot1](https://raw.githubusercontent.com/bit3725/homeassistant-mi-water-purifier/master/images/screenshot1.png)
-![Screenshot2](https://raw.githubusercontent.com/bit3725/homeassistant-mi-water-purifier/master/images/screenshot2.png)
-![Screenshot3](https://raw.githubusercontent.com/bit3725/homeassistant-mi-water-purifier/master/images/screenshot3.png)
+![Screenshot1](https://raw.githubusercontent.com/ptbsare/homeassistant-mi-water-purifier/master/screenshot1.png)
+![Screenshot2](https://raw.githubusercontent.com/ptbsare/homeassistant-mi-water-purifier/master/screenshot2.png)
+![Screenshot3](https://raw.githubusercontent.com/ptbsare/homeassistant-mi-water-purifier/master/screenshot3.png)
 
 ## Installation
 1. Install HACS in HA.
