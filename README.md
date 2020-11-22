@@ -22,6 +22,7 @@ sensor:
     host: YOUR_SENSOR_IP
     token: YOUR_SENSOR_TOKEN
     name: YOUT_SENSOR_NAME
+    scan_interval: 97
 ```
 
 ```yaml
