@@ -1,13 +1,14 @@
 # homeassistant-mi-water-purifier
 XiaoMi Water Purifier component for Home Assistant.
+model：yunmi.waterpuri.lx11
 
 ![Screenshot1](https://raw.githubusercontent.com/bit3725/homeassistant-mi-water-purifier/master/images/screenshot1.png)
 ![Screenshot2](https://raw.githubusercontent.com/bit3725/homeassistant-mi-water-purifier/master/images/screenshot2.png)
 ![Screenshot3](https://raw.githubusercontent.com/bit3725/homeassistant-mi-water-purifier/master/images/screenshot3.png)
 
 ## Installation
-1. Copy *custom_components/sensor/mi_water_purifier.py* to **.homeassistant/custom_components/sensor**.
-2. Get the IP of your sensor.
+1. Install HACS in HA.
+2. Install the integration in HACS by adding custom repo: `ptbsare/homeassistant-mi-water-purifier`
 3. Follow [Retrieving the Access Token](https://home-assistant.io/components/vacuum.xiaomi_miio/#retrieving-the-access-token) guide to get the token of your sensor
 
 ## Configuration
@@ -20,15 +21,14 @@ sensor:
 ```
 
 ```yaml
-group:
-  - xiaomi_water_purifier:
-    name: Xiaomi Water Purifier
-    icon: mdi:water
-    entities:
-      - sensor.tap_water
-      - sensor.filtered_water
-      - sensor.pp_cotton_filter
-      - sensor.front_active_carbon_filter
-      - sensor.ro_filter
-      - sensor.rear_active_carbon_filter
+xiaomi_water_purifier:
+  name: 厨房净水器
+  icon: mdi:water
+  entities:
+    - sensor.zi_lai_shui
+    - sensor.guo_lu_zhi_yin_shui
+    - sensor.jin_shui_wen_du
+    - sensor.qian_zhi_ppmian_lu_xin
+    - sensor.chun_shui_rolu_xin
+    - sensor.hou_zhi_fu_he_tan_lu_xin
 ```
