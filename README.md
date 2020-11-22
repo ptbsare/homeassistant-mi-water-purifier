@@ -1,6 +1,10 @@
 # homeassistant-mi-water-purifier
 XiaoMi Water Purifier component for Home Assistant.
-model：yunmi.waterpuri.lx11
+
+* model：yunmi.waterpuri.lx11
+
+* 名称：小米净水器C1 三出水
+
 
 ![Screenshot1](https://raw.githubusercontent.com/bit3725/homeassistant-mi-water-purifier/master/images/screenshot1.png)
 ![Screenshot2](https://raw.githubusercontent.com/bit3725/homeassistant-mi-water-purifier/master/images/screenshot2.png)
