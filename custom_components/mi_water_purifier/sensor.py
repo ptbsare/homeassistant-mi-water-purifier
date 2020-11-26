@@ -8,7 +8,7 @@ from homeassistant.const import (CONF_NAME, CONF_HOST, CONF_TOKEN, )
 from homeassistant.helpers.entity import Entity
 from homeassistant.exceptions import PlatformNotReady
 from miio import Device, DeviceException
-
+from . import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 REQUIREMENTS = ['python-miio>=0.3.1']
@@ -61,6 +61,11 @@ class XiaomiWaterPurifierSensor(Entity):
         self._waterPurifier = waterPurifier
         self._data_key = data_key
         self.parse_data()
+        self._unique_id = self._data_key['key']
+        
+    @property
+    def unique_id(self):
+        return self._unique_id
 
     @property
     def name(self):
@@ -117,6 +122,19 @@ class XiaomiWaterPurifierSensor(Entity):
     def update(self):
         """Get the latest data and updates the states."""
         self.parse_data()
+        
+    @property
+    def device_info(self):
+        return {
+            "identifiers": {
+                # Serial numbers are unique identifiers within a specific domain
+                (DOMAIN, self._waterPurifier.unique_id)
+            },
+            "name": self._waterPurifier.name,
+            "manufacturer": "Yunmi",
+            "model": self._waterPurifier.device.info.model,
+            "sw_version": self._waterPurifier.device.info.hardware_version,
+        }
 
 class XiaomiWaterPurifier(Entity):
     """Representation of a XiaomiWaterPurifier."""
@@ -127,6 +145,11 @@ class XiaomiWaterPurifier(Entity):
         self._device = device
         self._name = name
         self.parse_data()
+        self._unique_id = device.info.mac_address
+        
+    @property
+    def unique_id(self):
+        return self._unique_id
 
     @property
     def name(self):
@@ -201,3 +224,16 @@ class XiaomiWaterPurifier(Entity):
     def update(self):
         """Get the latest data and updates the states."""
         self.parse_data()
+        
+    @property
+    def device_info(self):
+        return {
+            "identifiers": {
+                # Serial numbers are unique identifiers within a specific domain
+                (DOMAIN, self.unique_id)
+            },
+            "name": self.name,
+            "manufacturer": "Yunmi",
+            "model": self.device.info.model,
+            "sw_version": self.device.info.hardware_version,
+        }
