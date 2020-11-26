@@ -132,8 +132,8 @@ class XiaomiWaterPurifierSensor(Entity):
             },
             "name": self._waterPurifier.name,
             "manufacturer": "Yunmi",
-            "model": self._waterPurifier.device.info.model,
-            "sw_version": self._waterPurifier.device.info.hardware_version,
+            "model": self._waterPurifier.device.info().model,
+            "sw_version": self._waterPurifier.device.info().hardware_version,
         }
 
 class XiaomiWaterPurifier(Entity):
@@ -145,7 +145,7 @@ class XiaomiWaterPurifier(Entity):
         self._device = device
         self._name = name
         self.parse_data()
-        self._unique_id = device.info.mac_address
+        self._unique_id = device.info().mac_address
         
     @property
     def unique_id(self):
@@ -234,6 +234,6 @@ class XiaomiWaterPurifier(Entity):
             },
             "name": self.name,
             "manufacturer": "Yunmi",
-            "model": self.device.info.model,
-            "sw_version": self.device.info.hardware_version,
+            "model": self.device.info().model,
+            "sw_version": self.device.info().hardware_version,
         }
