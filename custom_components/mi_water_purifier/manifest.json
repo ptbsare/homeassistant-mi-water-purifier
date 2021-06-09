@@ -2,6 +2,7 @@
   "domain": "mi_water_purifier",
   "name": "mi_water_purifier",
   "documentation": "https://github.com/ptbsare/homeassistant-mi-water-purifier",
+  "version": "1.0",
   "requirements": [
     "python-miio>=0.5.3"
   ],
